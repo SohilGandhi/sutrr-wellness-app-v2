@@ -35,6 +35,11 @@
 
   /* Typography */
   --font-family-sans: 'Outfit', sans-serif;
+
+  /* Shadows */
+  --shadow-card: 0 2px 12px -4px rgba(0, 0, 0, 0.03);
+  --shadow-card-premium: 0 8px 24px -8px rgba(142, 122, 181, 0.15);
+  --shadow-btn-primary: 0 4px 14px 0 rgba(142, 122, 181, 0.3);
 }
 
 @layer utilities {
@@ -53,16 +58,16 @@
 
   /* Premium Card Styles */
   .card {
-    @apply bg-card rounded-3xl border border-border/60 shadow-[0_2px_12px_-4px_rgba(0, 0, 0, 0.03)];
+    @apply bg-card rounded-3xl border border-border/60 shadow-card;
   }
 
   .card-premium {
-    @apply bg-card rounded-3xl border-none shadow-[0_8px_24px_-8px_rgba(142, 122, 181, 0.15)];
+    @apply bg-card rounded-3xl border-none shadow-card-premium;
   }
 
   /* Interactive Elements */
   .btn-primary {
-    @apply h-12 px-6 rounded-2xl bg-[#8E7AB5] text-white font-semibold shadow-[0_4px_14px_0_rgba(142, 122, 181, 0.3)] active:scale-[0.98] transition-all flex items-center justify-center;
+    @apply h-12 px-6 rounded-2xl bg-[#8E7AB5] text-white font-semibold shadow-btn-primary active:scale-[0.98] transition-all flex items-center justify-center;
   }
 
   .btn-secondary {
@@ -78,7 +83,7 @@
   }
 
   .pill-active {
-    @apply bg-primary text-white border-primary border-opacity-0 shadow-md;
+    @apply bg-primary text-white border-transparent shadow-md;
   }
 
   .pill-inactive {
@@ -91,15 +96,15 @@
 
   /* Gradients */
   .grad-primary {
-    @apply bg-[linear-gradient(135deg, #8E7AB5_0%, #A796C7_100%)];
+    background: linear-gradient(135deg, #8E7AB5 0%, #A796C7 100%);
   }
 
   .grad-secondary {
-    @apply bg-[linear-gradient(135deg, #B4D4B5_0%, #CDE6CE_100%)];
+    background: linear-gradient(135deg, #B4D4B5 0%, #CDE6CE 100%);
   }
 
   .grad-surface {
-    @apply bg-[linear-gradient(180deg, #F7F7FA_0%, #FFFFFF_100%)];
+    background: linear-gradient(180deg, #F7F7FA 0%, #FFFFFF 100%);
   }
 
   .mask-fade-b {
