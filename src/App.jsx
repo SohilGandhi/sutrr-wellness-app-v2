@@ -11,9 +11,26 @@ import Chatbot from './pages/Chatbot'
 import Learn from './pages/Learn'
 import Experts from './pages/Experts'
 import Profile from './pages/Profile'
+import Settings from './pages/Settings'
+import OrderHistory from './pages/OrderHistory'
 import Weather from './pages/Weather'
+import MoodCheckin from './pages/checkins/MoodCheckin'
+import EnergyCheckin from './pages/checkins/EnergyCheckin'
+import CycleCheckin from './pages/checkins/CycleCheckin'
+import Journal from './pages/checkins/Journal'
 
+/**
+ * Main Application Component
+ * Handles client-side routing and global state (like onboarding status).
+ * 
+ * Architecture:
+ * - Uses React Router v7 for navigation.
+ * - Wraps all content in a "phone-frame" div for desktop viewing simulation.
+ * - Routes are split between "Immersive" (Splash, Onboarding) and "Layout-wrapped" (Dashboard, Shop, etc).
+ */
 export default function App() {
+    // Tracks if user has completed the intro flow. 
+    // In a real app, this would check localStorage or a backend user profile.
     const [onboarded, setOnboarded] = useState(false)
 
     return (
@@ -30,6 +47,12 @@ export default function App() {
                     <Route path="/learn" element={<Learn />} />
                     <Route path="/experts" element={<Experts />} />
                     <Route path="/profile" element={<Profile />} />
+                    <Route path="/settings" element={<Settings />} />
+                    <Route path="/order-history" element={<OrderHistory />} />
+                    <Route path="/checkin/mood" element={<MoodCheckin />} />
+                    <Route path="/checkin/energy" element={<EnergyCheckin />} />
+                    <Route path="/checkin/cycle" element={<CycleCheckin />} />
+                    <Route path="/checkin/journal" element={<Journal />} />
                 </Route>
                 <Route path="/weather" element={<Weather />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
