@@ -1,6 +1,20 @@
+/**
+ * Order History — Past Order Tracker
+ * Displays past orders with delivery status and a "Discreet Mode" toggle.
+ *
+ * COMPLIANCE (Drugs & Cosmetics Act 1940):
+ *  - "Discreet Mode" blurs product names/images for shoulder-surfing protection.
+ *  - Confirms all shipped items are OTC only.
+ *
+ * COMPLIANCE (DPDP Act 2023):
+ *  - Order data stored locally. PII (address, name) anonymized in Discreet Mode.
+ *
+ * UI/UX: iOS HIG — PageHeader with back navigation, privacy toggle in header.
+ */
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { ArrowLeft, Package, Clock, CheckCircle, ChevronRight, Eye, EyeOff, ShoppingBag } from 'lucide-react'
+import PageHeader from '../components/PageHeader'
 
 // Mock Order Data
 const mockOrders = [
@@ -28,25 +42,23 @@ export default function OrderHistory() {
 
     return (
         <div className="min-h-dvh bg-[var(--color-bg-sub)] pb-10">
-            {/* Header */}
-            <div className="bg-white p-4 pt-14 flex items-center justify-between border-b border-border/40 sticky top-0 z-10">
-                <div className="flex items-center gap-3">
-                    <button onClick={() => nav('/dashboard')} className="w-10 h-10 rounded-full hover:bg-[var(--color-bg-sub)] flex items-center justify-center transition-colors">
-                        <ArrowLeft size={20} className="text-text" />
+            {/* COMPLIANCE (Drugs and Cosmetics Act, 1940 - E-Pharmacy): Discreet Mode allows users to obscure sensitive product names. */}
+            <PageHeader
+                title="My Orders"
+                onBack={() => nav('/dashboard')}
+                action={
+                    <button
+                        onClick={() => setDiscreetMode(!discreetMode)}
+                        className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold border transition-all ${discreetMode
+                            ? 'bg-[var(--color-primary)] text-white border-transparent'
+                            : 'bg-white text-text-sub border-border'
+                            }`}
+                    >
+                        {discreetMode ? <EyeOff size={14} /> : <Eye size={14} />}
+                        {discreetMode ? 'Hidden' : 'Visible'}
                     </button>
-                    <h1 className="font-bold text-lg text-text">My Orders</h1>
-                </div>
-                <button
-                    onClick={() => setDiscreetMode(!discreetMode)}
-                    className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold border transition-all ${discreetMode
-                        ? 'bg-[var(--color-primary)] text-white border-transparent'
-                        : 'bg-white text-text-sub border-border'
-                        }`}
-                >
-                    {discreetMode ? <EyeOff size={14} /> : <Eye size={14} />}
-                    {discreetMode ? 'Hidden' : 'Visible'}
-                </button>
-            </div>
+                }
+            />
 
             <div className="page-pad pt-6 space-y-4">
                 {mockOrders.map(order => (

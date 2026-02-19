@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, Calendar, BookOpen, Sparkles, Trash2, Edit3, ChevronLeft, CheckSquare, Square, MessageCircle, AlertTriangle, Shield } from 'lucide-react'
+import { triggerHaptic } from '../../utils/haptics'
 
 /**
  * Reflection prompts — conversational suggestions to help users start writing.
@@ -163,6 +164,7 @@ export default function Journal() {
         setEntry('')
         setMood(null)
         setView('history')
+        triggerHaptic('success')
     }
 
     const openDetail = (e) => {
@@ -180,6 +182,7 @@ export default function Journal() {
         ))
         setActiveEntry(prev => ({ ...prev, text: editText.trim() }))
         setIsEditing(false)
+        triggerHaptic('success')
     }
 
     // Delete with confirmation modal
@@ -196,6 +199,7 @@ export default function Journal() {
         // Clear selection if in multi-select
         setSelected(new Set())
         setSelectMode(false)
+        triggerHaptic('heavy')
     }
 
     // Share to AI with DPDP consent
@@ -208,6 +212,7 @@ export default function Journal() {
         // Navigate to chatbot with the journal text as a pre-filled message
         nav('/chatbot', { state: { prefill: `Based on my journal: "${shareModal.text.substring(0, 200)}..." — can you give me advice?` } })
         setShareModal(null)
+        triggerHaptic('medium')
     }
 
     const toggleSelect = (id) => {

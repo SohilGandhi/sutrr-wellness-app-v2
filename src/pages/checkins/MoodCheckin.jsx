@@ -1,3 +1,13 @@
+/**
+ * Mood Check-in — Emotional Wellness Tracker
+ * Allows users to log their current mood with emoji-based selection and optional notes.
+ *
+ * COMPLIANCE (DPDP Act 2023 - Section 5):
+ *  - Mood data is stored locally in localStorage. No server transmission.
+ *  - Purpose limitation: data is used ONLY for wellness chart visualization on Dashboard.
+ *
+ * UI/UX: iOS HIG — Immersive full-screen, hidden bottom nav, large tap targets (≥48px).
+ */
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, Check, Wind } from 'lucide-react'
@@ -27,6 +37,11 @@ export default function MoodCheckin() {
 
     const handleSave = () => {
         setSaving(true)
+
+        // Persistence Logic
+        const existing = JSON.parse(localStorage.getItem('sutrr_checkins') || '{}')
+        localStorage.setItem('sutrr_checkins', JSON.stringify({ ...existing, mood: val }))
+
         setTimeout(() => {
             nav('/dashboard')
         }, 1500)

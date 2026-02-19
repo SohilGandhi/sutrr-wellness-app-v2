@@ -1,7 +1,27 @@
+/**
+ * Chatbot Page — AI Wellness Assistant
+ * Manages multi-conversation AI chat with auto-titling, rename, and delete.
+ *
+ * COMPLIANCE (Telemedicine Practice Guidelines 2020):
+ *  - AI chatbot is NOT a medical professional. Explicit disclaimer in UI.
+ *  - AI responses do not constitute diagnosis, prescription, or medical advice.
+ *
+ * COMPLIANCE (DPDP Act 2023 - Section 6):
+ *  - Chat data is stored locally in localStorage. No server-side storage.
+ *  - "Clear All" feature provides Right to Erasure for chat history.
+ *  - "Share to AI" from Journal requires explicit consent before processing.
+ *
+ * COMPLIANCE (Quick Exit / Safety):
+ *  - FakeWeatherOverlay provides instant discreet mode for user safety.
+ *
+ * UI/UX: iOS HIG — ChatGPT-style 2-view system (Conversation List + Active Chat).
+ */
 import { useState, useRef, useEffect } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { chatResponses } from '../data/mockData'
-import { ArrowLeft, Send, Sparkles, MoreVertical, Trash2, MessageSquarePlus, ChevronLeft, AlertTriangle, Shield, ShieldCheck, Edit3, Clock, MessageCircle } from 'lucide-react'
+import { ArrowLeft, Send, Sparkles, MoreVertical, Trash2, MessageSquarePlus, ChevronLeft, AlertTriangle, Shield, ShieldCheck, Edit3, Clock, MessageCircle, X } from 'lucide-react'
+import { triggerHaptic } from '../utils/haptics'
+import FakeWeatherOverlay from '../components/FakeWeatherOverlay'
 
 const SUGGESTED_PROMPTS = [
     "😟 I feel anxious today",
@@ -80,6 +100,7 @@ export default function Chatbot() {
     const [deleteModal, setDeleteModal] = useState(null) // { type: 'single'|'all', id }
     const [isRenaming, setIsRenaming] = useState(false)
     const [renameText, setRenameText] = useState('')
+    const [isDiscreetMode, setIsDiscreetMode] = useState(false)
 
     // Derived state
     const activeConvo = conversations.find(c => c.id === activeId) || null
@@ -136,6 +157,7 @@ export default function Chatbot() {
         }))
         setInp('')
         setTyping(true)
+        triggerHaptic('medium')
 
         // Simulate AI response
         setTimeout(() => {
@@ -174,6 +196,7 @@ export default function Chatbot() {
             if (activeId === deleteModal.id) setActiveId(null)
         }
         setDeleteModal(null)
+        triggerHaptic('heavy')
     }
 
     const startRename = () => {
@@ -189,6 +212,7 @@ export default function Chatbot() {
             c.id === activeId ? { ...c, title: renameText.trim() } : c
         ))
         setIsRenaming(false)
+        triggerHaptic('success')
     }
 
     // --- CONVERSATION LIST VIEW ---
@@ -210,12 +234,21 @@ export default function Chatbot() {
                     </div>
                 </div>
 
-                {conversations.length > 0 && (
-                    <button onClick={requestClearAll}
-                        className="text-xs text-red-400 font-bold px-3 py-1.5 rounded-lg hover:bg-red-50 transition-colors">
-                        Clear All
+                <div className="flex items-center gap-2">
+                    {conversations.length > 0 && (
+                        <button onClick={requestClearAll}
+                            className="text-xs text-red-400 font-bold px-3 py-1.5 rounded-lg hover:bg-red-50 transition-colors">
+                            Clear All
+                        </button>
+                    )}
+                    <button
+                        onClick={() => setIsDiscreetMode(true)}
+                        className="w-8 h-8 rounded-full bg-danger/5 hover:bg-danger/10 text-danger flex items-center justify-center transition-colors active:scale-95"
+                        aria-label="Quick Exit"
+                    >
+                        <X size={16} strokeWidth={2.5} />
                     </button>
-                )}
+                </div>
             </div>
 
             {/* Conversation List */}
@@ -308,7 +341,14 @@ export default function Chatbot() {
                     </div>
                 </div>
 
-                <div className="relative">
+                <div className="relative flex items-center gap-2">
+                    <button
+                        onClick={() => setIsDiscreetMode(true)}
+                        className="w-8 h-8 rounded-full bg-danger/5 hover:bg-danger/10 text-danger flex items-center justify-center transition-colors active:scale-95"
+                        aria-label="Quick Exit"
+                    >
+                        <X size={16} strokeWidth={2.5} />
+                    </button>
                     <button onClick={(e) => { e.stopPropagation(); setShowMenu(!showMenu) }}
                         className="w-9 h-9 rounded-full hover:bg-gray-50 flex items-center justify-center text-gray-500 transition-colors">
                         <MoreVertical size={20} />
@@ -392,6 +432,7 @@ export default function Chatbot() {
                         <Send size={18} className="translate-x-0.5" />
                     </button>
                 </div>
+                {/* COMPLIANCE (Telemedicine Guidelines 2020): Explicit disclaimer that AI is not a substitute for registered medical practitioners. */}
                 <p className="text-[0.6rem] text-center text-gray-400 mt-2 flex items-center justify-center gap-1">
                     <Sparkles size={10} /> Not medical advice. Consult a doctor for emergencies.
                 </p>
@@ -401,6 +442,8 @@ export default function Chatbot() {
 
     return (
         <>
+            <FakeWeatherOverlay isOpen={isDiscreetMode} onClose={() => setIsDiscreetMode(false)} />
+
             {/* Delete Modals */}
             {deleteModal && (
                 <DeleteModal

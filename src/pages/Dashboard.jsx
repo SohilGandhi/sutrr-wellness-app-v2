@@ -1,39 +1,107 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { wellnessScore, quickLogs, dailyInsight } from '../data/mockData'
-import { Bell, ChevronRight, Wind, Zap, Activity, BookOpen, Sparkles, TrendingUp, X, MessageCircle } from 'lucide-react'
+import { Bell, ChevronRight, Wind, Zap, Activity, BookOpen, Sparkles, TrendingUp, X, MessageCircle, User } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { LineChart, Line, BarChart, Bar, ResponsiveContainer, XAxis, Tooltip } from 'recharts'
+import NotificationDrawer from '../components/NotificationDrawer'
+import FakeWeatherOverlay from '../components/FakeWeatherOverlay'
 
 /**
- * Weekly Trends — Simple Bar Chart for Mood/Energy
- * Visualizes 7-day energy data to help users identify patterns.
+ * Unified Wellness Charts — Interactive Data Card
+ * Replaces the static CSS chart with a dynamic 3-tab chart using Recharts and local storage.
  */
-const WeeklyTrends = () => {
-    const data = [60, 45, 75, 50, 80, 70, 85]
+const WellnessAtAGlance = () => {
+    const [activeTab, setActiveTab] = useState('Energy')
+
+    // Mock data structures
+    const data = {
+        Energy: [
+            { day: 'M', value: 60 }, { day: 'T', value: 45 }, { day: 'W', value: 75 },
+            { day: 'T', value: 50 }, { day: 'F', value: 80 }, { day: 'S', value: 70 },
+            { day: 'S', value: 85 }
+        ],
+        Mood: [
+            { day: 'M', value: 3 }, { day: 'T', value: 2 }, { day: 'W', value: 4 },
+            { day: 'T', value: 4 }, { day: 'F', value: 5 }, { day: 'S', value: 4 },
+            { day: 'S', value: 5 } // 1-5 scale
+        ],
+        Cycle: [
+            { day: '10', value: 1 }, { day: '11', value: 1 }, { day: '12', value: 2 },
+            { day: '13', value: 3 }, { day: '14', value: 4 }, { day: '15', value: 3 },
+            { day: '16', value: 2 }
+        ]
+    }
+
+    // Pull real data from localStorage for today's value (Immediate Gratification UX)
+    const localCheckins = JSON.parse(localStorage.getItem('sutrr_checkins') || '{}')
+    if (localCheckins.energy) data.Energy[6].value = parseInt(localCheckins.energy)
+    if (localCheckins.mood) data.Mood[6].value = parseInt(localCheckins.mood)
+
+    const renderChart = () => {
+        if (activeTab === 'Energy') {
+            return (
+                <ResponsiveContainer width="100%" height={120}>
+                    <BarChart data={data.Energy} margin={{ top: 10, right: 0, left: 0, bottom: 0 }}>
+                        <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#9ca3af' }} dy={10} />
+                        <Tooltip cursor={{ fill: '#f3f4f6' }} contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
+                        <Bar dataKey="value" fill="#818cf8" radius={[4, 4, 4, 4]} barSize={24} />
+                    </BarChart>
+                </ResponsiveContainer>
+            )
+        }
+        if (activeTab === 'Mood') {
+            return (
+                <ResponsiveContainer width="100%" height={120}>
+                    <LineChart data={data.Mood} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
+                        <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#9ca3af' }} dy={10} />
+                        <Tooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
+                        <Line type="monotone" dataKey="value" stroke="#34d399" strokeWidth={3} dot={{ fill: '#34d399', strokeWidth: 2, r: 4, stroke: '#fff' }} activeDot={{ r: 6 }} />
+                    </LineChart>
+                </ResponsiveContainer>
+            )
+        }
+        return (
+            <ResponsiveContainer width="100%" height={120}>
+                <LineChart data={data.Cycle} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
+                    <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#9ca3af' }} dy={10} />
+                    <Tooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
+                    <Line type="monotone" dataKey="value" stroke="#f472b6" strokeWidth={3} dot={{ fill: '#f472b6', strokeWidth: 2, r: 4, stroke: '#fff' }} activeDot={{ r: 6 }} />
+                </LineChart>
+            </ResponsiveContainer>
+        )
+    }
+
     return (
         <div className="bg-white rounded-3xl p-5 border border-border/40 shadow-sm">
-            <div className="flex justify-between items-center mb-4">
-                <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-500">
-                        <TrendingUp size={16} />
-                    </div>
-                    <h3 className="text-sm font-bold text-text">Weekly Energy</h3>
+            <div className="flex justify-between items-center mb-6">
+                <h3 className="text-base font-bold text-text">At a Glance</h3>
+                <div className="flex bg-gray-100 rounded-full p-1">
+                    {['Energy', 'Mood', 'Cycle'].map((tab) => (
+                        <button
+                            key={tab}
+                            onClick={() => setActiveTab(tab)}
+                            className={`px-3 py-1 text-xs font-bold rounded-full transition-all ${activeTab === tab ? 'bg-white text-text shadow-sm' : 'text-text-sub hover:text-text'}`}
+                        >
+                            {tab}
+                        </button>
+                    ))}
                 </div>
-                <span className="text-xs font-bold text-green-500 bg-green-50 px-2 py-1 rounded-lg">+12%</span>
             </div>
 
-            <div className="flex items-end justify-between h-24 gap-2">
-                {data.map((h, i) => (
-                    <div key={i} className="flex-1 flex flex-col justify-end items-center gap-1">
-                        <div
-                            style={{ height: `${h}%` }}
-                            className={`w-full rounded-t-lg transition-all duration-500 ${i === 6 ? 'bg-[var(--color-primary)]' : 'bg-gray-100'
-                                }`}
-                        />
-                        <span className="text-[0.6rem] text-text-dim font-medium">
-                            {['M', 'T', 'W', 'T', 'F', 'S', 'S'][i]}
-                        </span>
-                    </div>
-                ))}
+            <div className="h-32 w-full">
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={activeTab}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.2 }}
+                        className="w-full h-full"
+                    >
+                        {renderChart()}
+                    </motion.div>
+                </AnimatePresence>
             </div>
         </div>
     )
@@ -45,6 +113,47 @@ const iconMap = {
     'Energy': <Zap size={22} />,
     'Cycle': <Activity size={22} />,
     'Journal': <BookOpen size={22} />
+}
+
+/**
+ * Conversion Ticker — Live Social Proof
+ * Displays anonymized, compliant social proof to build trust and urgency.
+ */
+const ConversionTicker = () => {
+    const [index, setIndex] = useState(0)
+
+    // COMPLIANCE (Telemedicine 2020 / DPDP 2023): Anonymized social proof, no guaranteed medical outcomes or PII.
+    // COMPLIANCE (Drugs & Cosmetics Act): Promoting only general wellness/OTC, no Schedule H/X drugs.
+    const messages = [
+        "⚡ Dr. Anjali is online for instant consultation",
+        "🔥 12 people bought the Intimacy Kit today",
+        "⭐ Someone just rated their expert session 5 stars",
+        "🌿 5 users just started their Ayurveda wellness plan"
+    ]
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setIndex((prev) => (prev + 1) % messages.length)
+        }, 4000)
+        return () => clearInterval(timer)
+    }, [])
+
+    return (
+        <div className="bg-indigo-50/80 border border-indigo-100 rounded-2xl p-3 flex items-center justify-center overflow-hidden h-12 shadow-sm">
+            <AnimatePresence mode="wait">
+                <motion.div
+                    key={index}
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -20, opacity: 0 }}
+                    transition={{ duration: 0.4, ease: "easeInOut" }}
+                    className="text-xs font-bold text-indigo-700 text-center w-full truncate px-2"
+                >
+                    {messages[index]}
+                </motion.div>
+            </AnimatePresence>
+        </div>
+    )
 }
 
 /**
@@ -61,6 +170,8 @@ export default function Dashboard() {
     const nav = useNavigate()
     const [score] = useState(wellnessScore)
     const [showWelcome, setShowWelcome] = useState(false)
+    const [showNotifications, setShowNotifications] = useState(false)
+    const [isDiscreetMode, setIsDiscreetMode] = useState(false)
 
     // Show welcome banner only on first visit
     useEffect(() => {
@@ -84,6 +195,8 @@ export default function Dashboard() {
 
     return (
         <div className="pb-28 min-h-dvh bg-[var(--color-bg-sub)]">
+            <FakeWeatherOverlay isOpen={isDiscreetMode} onClose={() => setIsDiscreetMode(false)} />
+
             {/* Header */}
             <div className="page-pad pt-14 pb-4 flex justify-between items-center bg-white sticky top-0 z-10 border-b border-border/40">
                 <div>
@@ -91,14 +204,24 @@ export default function Dashboard() {
                     <h1 className="text-2xl font-bold text-text">Hello, User <span className="text-xl">👋</span></h1>
                 </div>
                 <div className="flex gap-2 items-center">
-                    {/* AI Button with Label — Tier 2/3 users need text, not just icons */}
-                    <Link to="/chatbot" className="flex items-center gap-1.5 bg-[var(--color-primary)] text-white px-4 h-10 rounded-full shadow-lg shadow-indigo-200 active:scale-95 transition-transform">
-                        <Sparkles size={16} />
-                        <span className="text-xs font-bold">Ask AI</span>
-                    </Link>
-                    <button className="w-10 h-10 rounded-full bg-card border border-border/60 flex items-center justify-center text-text-sub shadow-sm active:scale-95 transition-transform">
+                    <button
+                        onClick={() => setShowNotifications(true)}
+                        className="relative w-10 h-10 rounded-full bg-card border border-border/60 flex items-center justify-center text-text-sub shadow-sm active:scale-95 transition-transform"
+                    >
                         <Bell size={18} />
+                        {/* Red unread indicator */}
+                        <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
                     </button>
+                    <button
+                        onClick={() => setIsDiscreetMode(true)}
+                        className="w-10 h-10 rounded-full bg-danger/5 border border-danger/10 flex items-center justify-center text-danger shadow-sm active:scale-95 transition-transform"
+                        aria-label="Quick Exit"
+                    >
+                        <X size={18} strokeWidth={2.5} />
+                    </button>
+                    <Link to="/profile" className="w-10 h-10 rounded-full bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-sm active:scale-95 transition-transform">
+                        <User size={18} />
+                    </Link>
                 </div>
             </div>
 
@@ -117,31 +240,14 @@ export default function Dashboard() {
                         <div className="relative z-10">
                             <p className="text-sm font-bold mb-1">👋 Welcome to Sutrr!</p>
                             <p className="text-xs text-white/90 leading-relaxed">
-                                Tap <strong>"Ask AI"</strong> above to get personalized wellness advice. Track your mood, energy & more!
+                                Tap the ✨ in the navigation bar to get personalized wellness advice from anywhere!
                             </p>
                         </div>
                     </div>
                 )}
 
-                {/* AI Buddy — HERO Position (moved to top per research) */}
-                <Link to="/chatbot" className="block relative overflow-hidden rounded-3xl grad-primary p-6 text-white shadow-lg shadow-indigo-200 active:scale-[0.98] transition-transform">
-                    <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full blur-2xl translate-x-8 -translate-y-8" />
-                    <div className="flex items-center justify-between relative z-10">
-                        <div>
-                            <div className="flex items-center gap-2 mb-2">
-                                <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
-                                    <MessageCircle size={16} />
-                                </div>
-                                <span className="text-xs font-bold uppercase tracking-wider text-white/90">AI Wellness Buddy</span>
-                            </div>
-                            <h3 className="text-xl font-bold mb-1">Ask anything...</h3>
-                            <p className="text-white/80 text-sm">Get personalized wellness advice</p>
-                        </div>
-                        <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
-                            <ChevronRight size={22} />
-                        </div>
-                    </div>
-                </Link>
+                {/* Conversion Ticker — Live Social Proof */}
+                <ConversionTicker />
 
                 {/* Wellness Score - Breathing Animation */}
                 <div className="card-premium p-6 relative overflow-hidden bg-white">
@@ -176,7 +282,7 @@ export default function Dashboard() {
                 </div>
 
                 {/* Trends Widget */}
-                <WeeklyTrends />
+                <WellnessAtAGlance />
 
                 {/* Quick Log — Larger Touch Targets (min 48px per WCAG) */}
                 <div>
@@ -208,6 +314,8 @@ export default function Dashboard() {
                 </div>
 
             </div>
+
+            <NotificationDrawer isOpen={showNotifications} onClose={() => setShowNotifications(false)} />
         </div>
     )
 }

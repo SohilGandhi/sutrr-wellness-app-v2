@@ -42,3 +42,17 @@ This application implements "Privacy by Design" to comply with DPDP 2023.
 - **Emoji Visual Cues**: Chatbot prompts use emoji prefixes for instant visual comprehension across literacy levels.
 - **High Contrast**: Destructive actions use red (#EF4444), primary actions use indigo (#6366F1).
 
+### 6. Quick Exit / Panic Button (Safety)
+- **Quick Exit Button**: Available on ALL screens via `PageHeader` and Dashboard. Uses `window.location.replace()` to navigate to Google WITHOUT leaving browser history.
+- **FakeWeatherOverlay**: An alternative discreet mode that instantly overlays a fake weather app on screen, activated via the "X" icon in headers.
+- **Rationale**: Critical for users in unsafe domestic environments where browsing sensitive health topics could put them at risk (aligned with Protection of Women from Domestic Violence Act, 2005).
+
+### 7. Telemedicine Expert Profiles (Telemedicine Practice Guidelines, 2020)
+- **Verifiable Identity**: Each doctor card displays full Name, Qualifications (MBBS, MD, etc.), and State Medical Council Registration Number.
+- **Fee Transparency**: Consultation fees are shown upfront BEFORE booking — no hidden charges.
+- **Mandatory Disclaimer**: A red "Compliance Notice" in the booking drawer states: "Teleconsultation is not a substitute for in-person emergency medical care."
+- **DPDP Integration**: The booking drawer confirms sessions are "100% anonymous, end-to-end encrypted, and protected under DPDP Act 2023."
+
+### 8. Codebase Compliance Audit (Phase 16)
+- **JSDoc + COMPLIANCE Tags**: All 14 screen files (`Dashboard`, `Shop`, `Learn`, `Experts`, `Chatbot`, `Profile`, `Settings`, `Cart`, `Onboarding`, `OrderHistory`, `MoodCheckin`, `EnergyCheckin`, `CycleCheckin`, `Journal`) contain searchable `COMPLIANCE (...)` tags referencing the exact regulation and section number.
+- **Searchable**: `grep -r "COMPLIANCE" src/` returns all compliance-tagged code for an auditor.

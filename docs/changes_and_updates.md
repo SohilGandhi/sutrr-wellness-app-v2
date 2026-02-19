@@ -20,6 +20,39 @@
 - Created `it_consultant_reference.md`.
 - Updated `.gitignore` to exclude internal docs.
 
+### [COMPLETED] Phase 15: Telemedicine Compliance & Expert Profiles
+- **Verifiable Credentials**: Added medical qualifications (e.g., MBBS, MD) and State Medical Council Registration Numbers to Expert profiles.
+- **Fee Transparency**: Explicitly stated consultation fees upfront.
+- **Detailed Profile Drawer**: Replaced immediate checkout with a clinical bio drawer.
+- **Legal Disclaimers**: Injected mandatory text stating teleconsultations are not for emergencies (Telemedicine Practice Guidelines 2020).
+
+### [COMPLETED] Phase 14: E-Commerce Experience Overhaul (Shop Page)
+- **Layout Toggle**: Added switch between 2x2 Grid (discovery) and 1-column List (details).
+- **Advanced Filtering & Sorting**: Added multi-select Filter Drawer and dropdown Sorting (Price, Rating).
+- **Branded Imagery**: Replaced generic placeholders with realistic, branded "Sutrr" product images across both Shop and Learn pages.
+
+### [COMPLETED] Phase 13: Global Safety Features (Quick Exit)
+- **Quick Exit Component**: Created a discreet escape hatch button using `window.location.replace('https://www.google.com')` to skip browser history.
+- **Fake Weather Overlay**: Implemented an instant disguise screen as an alternative discreet mode option.
+
+### [COMPLETED] Phase 12: Navigation Overhaul & Conversion Engine
+- **Center AI Nav Bar**: Refactored Bottom Nav with a stylized Chatbot FAB in the center.
+- **Conversion Ticker**: Implemented auto-rotating social proof ticker ("3 doctors online").
+- **Top App Bar**: Moved Profile avatar next to Notification Bell.
+
+### [COMPLETED] Phase 11: Real-time Dashboard & Notification UX
+- **Notification Drawer**: Built functional slide-out UI using framer-motion.
+- **Unified Wellness Charts**: Integrated `recharts` for an interactive 3-tab data card (Energy, Mood, Cycle).
+- **Data Persistence**: Wired Quick Logs to `localStorage` affecting the Dashboard charts instantly.
+
+### [COMPLETED] Phase 10: Native App Polish & Compliance Verification
+- **PWA Upgrades**: Added `viewport-fit=cover`, dynamic `theme-color`, turned off touch highlights (`-webkit-tap-highlight-color: transparent`), and enforced native `select-none` handling.
+- **Visual Grammar Audit**: Fixed Onboarding action buttons (aligned "Go Back" and "Continue" with correct `.btn-outline` and `.btn-primary` weights per iOS HIG). Checked Journal/Chatbot modals for HIG/Material 3 compliance (Cancel on Left/Tonal, Action on Right/Filled).
+- **Smooth Page Transitions**: Installed `framer-motion` and refactored `Layout.jsx` with `<AnimatePresence>` and `useOutlet()` to deliver 60fps iOS-style slide-in/fade transitions across tabs and immersive screens.
+- **Native Haptics Engine**: Created `utils/haptics.js` and wired `navigator.vibrate` into core interactions (Bottom Nav tabs, Journal Save/Delete/Share, Chatbot Send/Delete/Rename) simulating physical device feedback.
+- **Compliance Tagger**: Injected explicit `// COMPLIANCE (...)` tags spanning DPDP Act 2023 (Consent, Right to erasure, Purpose limitation), Telemedicine Guidelines 2020 (AI disclaimer), and Drugs & Cosmetics Act 1940 (Discreet E-Pharmacy Mode).
+- **DRY Refactoring**: Extracted repetitive Header/ArrowLeft patterns across Settings, OrderHistory, and Cart into a single, unified `<PageHeader />` component handling `safe-pt` notch padding.
+
 ### [COMPLETED] Missing Features & Enhancements
 - **Settings Hub**: Added `Settings.jsx` with Privacy (Camouflage, App Lock), Notifications, and Account management.
 - **Order History**: Added `OrderHistory.jsx` with "Discreet Mode" (blurring item names).

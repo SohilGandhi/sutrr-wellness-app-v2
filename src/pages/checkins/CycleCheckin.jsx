@@ -1,3 +1,14 @@
+/**
+ * Cycle Check-in — Menstrual Cycle Tracker
+ * Allows users to log their current cycle phase with symptom tracking.
+ *
+ * COMPLIANCE (DPDP Act 2023 - Section 5, 8):
+ *  - Cycle data is classified as Sensitive Personal Data.
+ *  - Stored locally in localStorage ONLY. No cloud storage.
+ *  - Purpose limitation: data used ONLY for Dashboard wellness charts.
+ *
+ * UI/UX: iOS HIG — Immersive full-screen, color-coded phases, large tap targets.
+ */
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, Check, Activity, Droplets, Calendar } from 'lucide-react'
@@ -16,6 +27,10 @@ export default function CycleCheckin() {
 
     const handleSave = () => {
         setSaving(true)
+
+        const existing = JSON.parse(localStorage.getItem('sutrr_checkins') || '{}')
+        localStorage.setItem('sutrr_checkins', JSON.stringify({ ...existing, cycle: selected }))
+
         setTimeout(() => nav('/dashboard'), 1500)
     }
 

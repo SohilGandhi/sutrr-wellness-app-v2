@@ -13,7 +13,6 @@ import Experts from './pages/Experts'
 import Profile from './pages/Profile'
 import Settings from './pages/Settings'
 import OrderHistory from './pages/OrderHistory'
-import Weather from './pages/Weather'
 import MoodCheckin from './pages/checkins/MoodCheckin'
 import EnergyCheckin from './pages/checkins/EnergyCheckin'
 import CycleCheckin from './pages/checkins/CycleCheckin'
@@ -54,7 +53,6 @@ export default function App() {
                     <Route path="/checkin/cycle" element={<CycleCheckin />} />
                     <Route path="/checkin/journal" element={<Journal />} />
                 </Route>
-                <Route path="/weather" element={<Weather />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
         </div>

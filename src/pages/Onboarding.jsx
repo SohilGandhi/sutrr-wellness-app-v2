@@ -1,3 +1,14 @@
+/**
+ * Onboarding Flow — User Personalization & Consent
+ * Multi-step wizard for identity, goals, and consent collection.
+ *
+ * COMPLIANCE (DPDP Act 2023 - Section 9):
+ *  - Age Gate: Users must confirm they are 18+ (or have guardian consent).
+ *  - Explicit, informed consent is collected via checkboxes (not pre-ticked).
+ *  - Purpose limitation: data collected here is ONLY used for personalization.
+ *
+ * UI/UX: iOS HIG — Step indicators, full-width primary/secondary button alignment.
+ */
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Heart, Leaf, Shield, ChevronRight, Check } from 'lucide-react'
@@ -67,8 +78,8 @@ export default function Onboarding({ onComplete }) {
                     {s.options.map(o => (
                         <button key={o} onClick={() => toggle(o)}
                             className={`w-full text-left px-4 py-3.5 rounded-xl border-1.5 transition-all duration-200 flex items-center justify-between ${isOn(o)
-                                    ? 'bg-primary-faint border-primary text-text'
-                                    : 'bg-card border-border text-text-sub hover:border-primary-light'
+                                ? 'bg-primary-faint border-primary text-text'
+                                : 'bg-card border-border text-text-sub hover:border-primary-light'
                                 }`}>
                             <span className="text-sm font-medium">{o}</span>
                             <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${isOn(o) ? 'border-primary bg-primary' : 'border-text-dim/30'
@@ -81,15 +92,15 @@ export default function Onboarding({ onComplete }) {
             </div>
 
             {/* Actions */}
-            <div className="pt-6">
+            <div className="pt-6 flex flex-col gap-3">
                 <button onClick={doNext}
-                    className="btn-primary flex items-center justify-center gap-2">
+                    className="btn-primary w-full flex items-center justify-center gap-2">
                     {cur < steps.length - 1 ? 'Continue' : 'Start My Journey'}
                     <ChevronRight size={16} />
                 </button>
                 {cur > 0 && (
                     <button onClick={() => setCur(cur - 1)}
-                        className="w-full mt-2 py-2.5 text-text-dim text-sm font-medium bg-transparent border-none cursor-pointer">
+                        className="btn-outline w-full flex items-center justify-center">
                         Go Back
                     </button>
                 )}

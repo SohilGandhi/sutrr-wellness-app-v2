@@ -22,5 +22,8 @@
 | **Consent Artifact** | Compliance | A UI element that captures explicit, informed consent per DPDP 2023 before processing personal data. | Share-to-AI consent modal in Journal with privacy notice. |
 | **Purpose Limitation** | Compliance | DPDP principle: data can only be used for the specific purpose for which consent was obtained. | AI consent modal states: "Data will only be used for this conversation." |
 | **Touch Target** | Mobile UX | Minimum interactive element size for comfortable tapping. WCAG 2.1 AA requires 44px; we use 48px. | All buttons, nav items, input fields. |
-
+| **Bottom-Sheet Drawer** | UI Element | A panel that slides up from the bottom of the screen. Ideal for mobile filters and settings. | Shop Filters, Expert Profiles. |
+| **Telemedicine Guidelines (2020)** | Compliance | Indian Govt rules requiring doctors to show credentials, RegNo, and emergency disclaimers for teleconsults. | Expert profile drawer disclaimer. |
+| **Quick Exit / Panic Button** | UX Pattern | A discreet button allowing users to instantly leave sensitive pages without leaving browser history traces. | "X" icon in Experts and Dashboard headers. |
+| **Social Proof Ticker** | Conversion | An auto-updating banner showing peer activity to build trust. | "3 doctors online" on Dashboard. |
 *This list is dynamic. Add new terms as they are encountered.*

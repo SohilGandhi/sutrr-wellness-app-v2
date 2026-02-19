@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { ArrowLeft, Bell, Shield, Lock, Moon, HelpCircle, LogOut, ChevronRight, Eye, EyeOff } from 'lucide-react'
+import PageHeader from '../components/PageHeader'
 
 /**
  * Settings Page
@@ -68,12 +69,7 @@ export default function Settings() {
     return (
         <div className="min-h-dvh bg-[var(--color-bg-sub)] pb-10">
             {/* Header */}
-            <div className="bg-white p-4 pt-14 flex items-center gap-3 border-b border-border/40 sticky top-0 z-10">
-                <button onClick={() => nav('/profile')} className="w-10 h-10 rounded-full hover:bg-[var(--color-bg-sub)] flex items-center justify-center transition-colors">
-                    <ArrowLeft size={20} className="text-text" />
-                </button>
-                <h1 className="font-bold text-lg text-text">Settings</h1>
-            </div>
+            <PageHeader title="Settings" onBack={() => nav('/profile')} />
 
             <div className="page-pad pt-6">
 
@@ -81,6 +77,7 @@ export default function Settings() {
                 <Section title="Account">
                     <Row icon={Shield} label="Personal Info" onClick={() => { }} />
                     <Row icon={Lock} label="Change Password" onClick={() => { }} />
+                    {/* COMPLIANCE (DPDP Act 2023 - Section 6): Explicit, informed consent management. Users must have the right to withdraw consent as easily as they gave it. */}
                     <Row icon={Shield} label="Privacy & Consent (DPDP)" onClick={() => { }} />
                 </Section>
 

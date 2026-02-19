@@ -42,10 +42,41 @@
   --shadow-btn-primary: 0 4px 14px 0 rgba(142, 122, 181, 0.3);
 }
 
+@layer base {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply select-none;
+    /* Native app feel: disable text selection by default */
+  }
+
+  /* Allow text selection only where appropriate */
+  input,
+  textarea,
+  [contenteditable="true"] {
+    @apply select-text;
+  }
+}
+
 @layer utilities {
   .page-pad {
     @apply px-4 sm:px-6;
     /* Responsive spacing: 16px on mobile, 24px on larger screens */
+  }
+
+  /* Safe Area Utilities for iOS Notch/Home Indicator */
+  .safe-pt {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+
+  .safe-pb {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .safe-mb {
+    margin-bottom: env(safe-area-inset-bottom, 0px);
   }
 
   .glass {
@@ -72,6 +103,10 @@
 
   .btn-secondary {
     @apply h-12 px-6 rounded-2xl bg-[#B4D4B5] text-[#2D3A2D] font-semibold active:scale-[0.98] transition-all flex items-center justify-center;
+  }
+
+  .btn-outline {
+    @apply h-12 px-6 rounded-2xl border-2 border-border bg-transparent text-text-sub font-semibold hover:bg-card-alt active:scale-[0.98] transition-all flex items-center justify-center;
   }
 
   .input {

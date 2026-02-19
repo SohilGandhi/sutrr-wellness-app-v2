@@ -1,15 +1,42 @@
+/**
+ * Profile Page — User Account & Privacy Hub
+ * Central control for account management, privacy settings, and data export/deletion.
+ *
+ * COMPLIANCE (DPDP Act 2023 - Section 12, 13):
+ *  - Right to Erasure: "Delete Account" permanently removes all personal data.
+ *  - Right to Data Portability: "Download My Data" exports user information.
+ *  - Camouflage Mode: Hides app name/icon for user safety (Domestic Violence Act 2005 alignment).
+ *
+ * COMPLIANCE (Quick Exit / Safety):
+ *  - FakeWeatherOverlay provides instant discreet mode for user safety.
+ *
+ * UI/UX: iOS HIG — Grouped settings layout with destructive actions clearly marked in red.
+ */
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom' // Added Link and useNavigate
-import { Shield, Fingerprint, Eye, Download, Trash2, FileText, ChevronRight, LogOut, Settings, ShoppingBag, Bell } from 'lucide-react' // Added icons
+import { Link, useNavigate } from 'react-router-dom'
+import { Shield, Fingerprint, Eye, Download, Trash2, FileText, ChevronRight, LogOut, Settings, ShoppingBag, Bell, X } from 'lucide-react'
+import FakeWeatherOverlay from '../components/FakeWeatherOverlay'
 
 export default function Profile() {
     const nav = useNavigate()
     const [camo, setCamo] = useState(true)
+    const [isDiscreetMode, setIsDiscreetMode] = useState(false)
 
     return (
         <div className="pb-24 bg-[var(--color-bg-sub)] min-h-dvh">
+            <FakeWeatherOverlay isOpen={isDiscreetMode} onClose={() => setIsDiscreetMode(false)} />
+
             {/* Header */}
             <div className="pt-14 pb-8 bg-white rounded-b-[2rem] border-b border-border/40 text-center shadow-sm relative">
+                {/* Quick Exit - Top Left */}
+                <button
+                    onClick={() => setIsDiscreetMode(true)}
+                    className="absolute top-5 left-5 w-10 h-10 rounded-full bg-danger/5 border border-danger/10 flex items-center justify-center text-[var(--color-danger)] shadow-sm hover:scale-105 transition-transform"
+                    aria-label="Quick Exit"
+                >
+                    <X size={18} strokeWidth={2.5} />
+                </button>
+
                 {/* Settings Icon - Top Right */}
                 <Link to="/settings" className="absolute top-5 right-5 w-10 h-10 rounded-full bg-[var(--color-bg-sub)] flex items-center justify-center text-text shadow-sm hover:scale-105 transition-transform">
                     <Settings size={20} />

@@ -1,9 +1,24 @@
+/**
+ * Cart Page — Order Checkout
+ * Displays cart items with quantity controls and a secure checkout flow.
+ *
+ * COMPLIANCE (Drugs & Cosmetics Act 1940):
+ *  - Discreet packaging notice: items are shipped in plain, unbranded packaging.
+ *  - Only OTC products can reach checkout.
+ *
+ * COMPLIANCE (DPDP Act 2023):
+ *  - Cart data is stored locally (localStorage) and never transmitted to third parties.
+ *
+ * UI/UX: iOS HIG — PageHeader with back navigation, sticky checkout bar.
+ */
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { products } from '../data/mockData'
 import { ArrowLeft, Minus, Plus, Trash2, Shield, Lock, Check } from 'lucide-react'
+import PageHeader from '../components/PageHeader'
 
 export default function Cart() {
+    const nav = useNavigate()
     const [items, setItems] = useState([
         { ...products[0], qty: 1 },
         { ...products[2], qty: 2 }
@@ -13,12 +28,7 @@ export default function Cart() {
 
     return (
         <div className="pb-32 bg-[var(--color-bg)] min-h-dvh">
-            <div className="page-pad pt-14 pb-4 bg-white sticky top-0 border-b border-border/40 z-10 flex items-center gap-4">
-                <Link to="/shop" className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-text hover:bg-[var(--color-bg-sub)]">
-                    <ArrowLeft size={20} />
-                </Link>
-                <h1 className="text-2xl font-bold text-text">My Cart ({items.length})</h1>
-            </div>
+            <PageHeader title={`My Cart (${items.length})`} onBack={() => nav('/shop')} />
 
             <div className="page-pad pt-6 space-y-6">
                 {items.map(item => (

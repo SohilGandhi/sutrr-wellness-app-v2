@@ -1,3 +1,13 @@
+/**
+ * Energy Check-in — Physical Vitality Tracker
+ * Users rate their energy level on a 1-5 scale with optional time-of-day context.
+ *
+ * COMPLIANCE (DPDP Act 2023 - Section 5):
+ *  - Energy data stored locally in localStorage. No server transmission.
+ *  - Purpose limitation: data used ONLY for Dashboard wellness charts.
+ *
+ * UI/UX: iOS HIG — Immersive full-screen with slider and large tap targets.
+ */
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, Check, Zap } from 'lucide-react'
@@ -9,6 +19,10 @@ export default function EnergyCheckin() {
 
     const handleSave = () => {
         setSaving(true)
+
+        const existing = JSON.parse(localStorage.getItem('sutrr_checkins') || '{}')
+        localStorage.setItem('sutrr_checkins', JSON.stringify({ ...existing, energy: level }))
+
         setTimeout(() => nav('/dashboard'), 1500)
     }
 

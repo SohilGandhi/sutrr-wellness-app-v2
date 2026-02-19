@@ -8,17 +8,21 @@
 A privacy-first, premium wellness application tailored for the Indian market, compliant with DPDP and ABHA standards.
 
 ## 2. Technical Stack (Frontend)
-- **Framework**: React 19 (Vite)
-- **Styling**: Tailwind CSS v4 (Utility-first, Custom Theme)
-- **State Management**: React State (Local) + Context (Planned for Global)
+- **Framework**: React 19 (Vite 7)
+- **Styling**: Tailwind CSS v4 (Utility-first, Custom Theme via `@theme`)
+- **State Management**: React State (Local) + localStorage persistence
 - **Icons**: Lucide React
 - **Routing**: React Router DOM v7
+- **Animations**: Framer Motion (page transitions, drawers)
+- **Charts**: Recharts (Energy, Mood, Cycle visualization)
+- **Typography**: Outfit (Google Fonts)
 
 ## 3. Architecture & Patterns
-- **Component-Based**: Modular components in `src/components/`.
+- **Component-Based**: Modular components in `src/components/` (PageHeader, Layout, NotificationDrawer, QuickExit, FakeWeatherOverlay).
 - **Page-Based Routing**: Key screens in `src/pages/` mapping to routes in `App.jsx`.
 - **Mock Data**: Currently using static JSON in `src/data/mockData.js`. *Backend should replace this.*
 - **Responsive Design**: Mobile-first approach with breakpoints (`sm`, `md`, `lg`) for larger screens.
+- **Compliance Tagging**: All 14 screen files contain searchable `COMPLIANCE (...)` JSDoc tags.
 
 ## 4. Key Features & Backend Requirements
 
@@ -31,20 +35,20 @@ A privacy-first, premium wellness application tailored for the Indian market, co
     - **ABHA**: Integration for health ID linking.
 
 ### B. eCommerce (Shop)
-- **Current State**: Static product list, local cart state.
+- **Current State**: Static product list with Grid/List toggle, sorting, multi-select filter drawer, branded product images, local cart state.
 - **Requirement**:
     - Product Catalog API (Images, Pricing, Inventory).
     - **Discreet Shipping**: Backend flag for "Packaging Type".
     - Order Management System (OMS) integration.
 
 ### C. Wellness Tools (Tracking)
-- **Current State**: Mocked graphs and scores.
+- **Current State**: Interactive recharts visualizations for Energy, Mood, Cycle. Data persisted in localStorage.
 - **Requirement**:
     - Time-series database for Mood, Energy, Cycle data.
     - AI Engine (Python/FastAPI recommended) to process logs and generate "Daily Insights".
 
 ### D. Chatbot (AI Buddy)
-- **Current State**: Hardcoded responses (`setTimeout`). Accepts pre-filled messages from Journal via React Router state.
+- **Current State**: Multi-conversation system with auto-titling, rename, delete, and localStorage persistence. Accepts pre-filled messages from Journal via React Router state.
 - **Requirement**:
     - LLM Integration (OpenAI/Anthropic/Llama).
     - **RAG Pipeline**: Retrieval-Augmented Generation on a curated sexual wellness knowledge base (medically verified).
@@ -58,18 +62,20 @@ A privacy-first, premium wellness application tailored for the Indian market, co
     - **DPDP Audit**: Log consent artifacts when user shares journal data with AI.
     - Search/filter entries by date, mood, keyword.
 
-### E. Teleconsultation (Experts)
-- **Current State**: Static doctor cards.
+### F. Teleconsultation (Experts)
+- **Current State**: Full doctor profiles with real avatars, qualifications, MCI Registration Numbers, consultation fees, bio, and a compliance booking drawer with DPDP/Telemedicine disclaimers.
 - **Requirement**:
     - Video Call SDK (Twilio/Agora/Dyte).
     - Scheduling System (Calendly-like slots).
     - E-Prescription generation (PDF).
+    - Verify RMP credentials against NMC (National Medical Commission) registry.
 
 ## 5. Security & Compliance (Non-Negotiable)
 1.  **Data Localization**: All user health data must be stored on servers within India.
 2.  **Encryption**: AES-256 for data at rest, TLS 1.3 for data in transit.
 3.  **Audit Logs**: Every data access by internal staff must be logged.
 4.  **Right to Forget**: The "Delete Account" feature (in Profile) must permanently wipe data from all backups within 30 days.
+5.  **Codebase Compliance Audit**: All 14 screen files are tagged with `COMPLIANCE (...)` JSDoc comments searchable via `grep -r "COMPLIANCE" src/`.
 
 ## 6. Future Roadmap
 - **Community**: Anonymous forums.
